@@ -108,14 +108,7 @@ export default function Hero() {
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
-          <a
-            href="/resume.pdf"
-            download
-            className="hero__btn hero__btn--secondary"
-            style={{ textDecoration: 'none' }}
-          >
-            Download Resume
-          </a>
+          
           <button className="hero__btn hero__btn--tertiary" onClick={() => scrollTo('#contact')}>
             Contact Me
           </button>
