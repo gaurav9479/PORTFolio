@@ -133,7 +133,7 @@ export default function Hero() {
           </div>
           <div className="hero__stat-divider" />
           <div className="hero__stat">
-            <span className="hero__stat-num">2nd Year</span>
+            <span className="hero__stat-num">3rd Year</span>
             <span className="hero__stat-label">MNNIT Allahabad</span>
           </div>
         </div>

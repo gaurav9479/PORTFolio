@@ -70,7 +70,7 @@ export default function About() {
         <div className="about__grid">
           <div className="about__text">
             <p className="about__intro about__animate-text">
-              I'm a 2nd-year Materials Engineering student at MNNIT Allahabad who builds full-stack products seriously.
+              I'm a 3rd-year Materials Engineering student at MNNIT Allahabad who builds full-stack products seriously.
               I've shipped SkyTrace — a real-time drone ATC system — and Glipkart — a production-grade e-commerce platform with live Stripe payments.
               I care about systems that work at scale, code that handles concurrency correctly, and problems that are genuinely hard to solve.
             </p>
