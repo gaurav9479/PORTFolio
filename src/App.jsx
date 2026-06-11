@@ -2,8 +2,9 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
-import Skills from './components/Skills';
 import Projects from './components/Projects';
+import Dsa from './components/Dsa';
+import OpenSource from './components/OpenSource';
 import Achievements from './components/Achievements';
 import Education from './components/Education';
 import Contact from './components/Contact';
@@ -16,8 +17,9 @@ function App() {
       <main>
         <Hero />
         <About />
-        <Skills />
         <Projects />
+        <Dsa />
+        <OpenSource />
         <Achievements />
         <Education />
         <Contact />
