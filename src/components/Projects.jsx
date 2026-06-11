@@ -24,7 +24,7 @@ const projects = [
     metric: '70% API speedup',
     tech: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'Redis', 'Leaflet.js', 'Tailwind CSS'],
     github: 'https://github.com/gaurav9479/SAAS-THE-CitAdel-of-SCALE',
-    demo: 'https://saas-the-cit-adel-of-scale.vercel.app/login',
+    demo: 'https://saas-the-cit-adel-of-scale.vercel.app/',
     color: '#8b5cf6', // Purple
     colorClass: 'project-purple'
   },
