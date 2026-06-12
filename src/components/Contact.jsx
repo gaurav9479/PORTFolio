@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Contact.css';
+import { animateSectionHeader } from '../utils/gsapAnimations';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,35 +71,27 @@ export default function Contact() {
     const el = containerRef.current;
     if (!el) return;
 
+    animateSectionHeader(el);
+
+    const st = { trigger: el, start: 'top 78%', toggleActions: 'play none none none' };
+
+    // Info panel: slides in from left with blur
     gsap.fromTo(el.querySelector('.contact__info'),
-      { opacity: 0, x: -30 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        }
-      }
+      { opacity: 0, x: -50, filter: 'blur(8px)' },
+      { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.9, ease: 'power3.out', scrollTrigger: st }
     );
 
+    // Form: slides in from right with blur, slightly delayed
     gsap.fromTo(el.querySelector('.contact__form'),
-      { opacity: 0, x: 30 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        delay: 0.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        }
-      }
+      { opacity: 0, x: 50, filter: 'blur(8px)' },
+      { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.9, delay: 0.2, ease: 'power3.out', scrollTrigger: st }
+    );
+
+    // Form fields reveal one by one from below
+    const fields = el.querySelectorAll('.contact__field');
+    gsap.fromTo(fields,
+      { opacity: 0, y: 25 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, delay: 0.4, ease: 'power3.out', scrollTrigger: st }
     );
   }, []);
 

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Education.css';
+import { animateSectionHeader } from '../utils/gsapAnimations';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,22 +38,22 @@ export default function Education() {
     const el = containerRef.current;
     if (!el) return;
 
+    animateSectionHeader(el);
+
+    // Each card slides in from right with a 3D perspective tilt
     const cards = el.querySelectorAll('.education__card');
-    gsap.fromTo(cards,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
+    cards.forEach((card, i) => {
+      gsap.fromTo(card,
+        { opacity: 0, x: 80, rotateY: 18, transformPerspective: 600, filter: 'blur(4px)' },
+        {
+          opacity: 1, x: 0, rotateY: 0, filter: 'blur(0px)',
+          duration: 0.85,
+          delay: i * 0.12,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' }
         }
-      }
-    );
+      );
+    });
   }, []);
 
   return (

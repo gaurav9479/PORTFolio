@@ -89,15 +89,19 @@ export default function Projects() {
     );
 
     // 3D tilt hover effect
-    cards.forEach((card) => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
+    const wrappers = el.querySelectorAll('.projects__card-wrapper');
+    wrappers.forEach((wrapper) => {
+      const card = wrapper.querySelector('.projects__card');
+
+      wrapper.addEventListener('mousemove', (e) => {
+        const rect = wrapper.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         const xc = rect.width / 2;
         const yc = rect.height / 2;
         const angleX = (yc - y) / 15;
         const angleY = (x - xc) / 20;
+        
         gsap.to(card, {
           rotateX: angleX,
           rotateY: angleY,
@@ -106,7 +110,8 @@ export default function Projects() {
           duration: 0.3
         });
       });
-      card.addEventListener('mouseleave', () => {
+      
+      wrapper.addEventListener('mouseleave', () => {
         gsap.to(card, {
           rotateX: 0,
           rotateY: 0,
@@ -128,58 +133,78 @@ export default function Projects() {
 
         <div className="projects__list">
           {projects.map((project, idx) => (
-            <article
-              key={project.title}
-              className={`projects__card glass-card ${project.colorClass}`}
-              style={{ '--project-accent': project.color }}
-            >
-              <div className="projects__card-header">
-                <div className="projects__card-num">{String(idx + 1).padStart(2, '0')}</div>
-                <div className="projects__card-info">
-                  <div className="projects__card-title-row">
-                    <h3 className="projects__card-title">{project.title}</h3>
-                    <span className="projects__metric-badge">{project.metric}</span>
+            <div className="projects__card-wrapper" key={project.title}>
+              <article
+                className={`projects__card glass-card ${project.colorClass}`}
+                style={{ '--project-accent': project.color }}
+              >
+                <div className="projects__card-header">
+                  <div className="projects__card-num">{String(idx + 1).padStart(2, '0')}</div>
+                  <div className="projects__card-info">
+                    <div className="projects__card-title-row">
+                      <h3 className="projects__card-title">{project.title}</h3>
+                      <span className="projects__metric-badge">{project.metric}</span>
+                    </div>
+                    <p className="projects__card-tagline">{project.tagline}</p>
                   </div>
-                  <p className="projects__card-tagline">{project.tagline}</p>
                 </div>
-              </div>
 
-              <p className="projects__description">{project.description}</p>
+                <p className="projects__description">{project.description}</p>
 
-              <div className="projects__card-footer">
-                <div className="projects__tags">
-                  {project.tech.map((t) => (
-                    <span key={t} className="tag">{t}</span>
-                  ))}
+                <div className="projects__card-footer">
+                  <div className="projects__tags">
+                    {project.tech.map((t) => (
+                      <span key={t} className="tag">{t}</span>
+                    ))}
+                  </div>
+                  {/* Ghost links to maintain flexbox layout size */}
+                  <div className="projects__links-row ghost-links" style={{ opacity: 0, pointerEvents: 'none' }}>
+                    <a className="projects__link">
+                      GitHub
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M7 17L17 7M17 7H7M17 7v10" />
+                      </svg>
+                    </a>
+                    {project.demo && (
+                      <a className="projects__link">
+                        Live Demo
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
                 </div>
-                <div className="projects__links-row">
+              </article>
+
+              {/* Absolute links detached from 3D card rotation */}
+              <div className="projects__links-row absolute-links">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="projects__link"
+                >
+                  GitHub
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </a>
+                {project.demo && (
                   <a
-                    href={project.github}
+                    href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="projects__link"
                   >
-                    GitHub
+                    Live Demo
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M7 17L17 7M17 7H7M17 7v10" />
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
                     </svg>
                   </a>
-                  {project.demo && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="projects__link"
-                    >
-                      Live Demo
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
-                      </svg>
-                    </a>
-                  )}
-                </div>
+                )}
               </div>
-            </article>
+            </div>
           ))}
         </div>
       </div>

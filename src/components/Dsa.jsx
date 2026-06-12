@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Dsa.css';
+import { animateSectionHeader } from '../utils/gsapAnimations';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,33 +13,37 @@ export default function Dsa() {
     const el = containerRef.current;
     if (!el) return;
 
-    // Fade-in cards
+    // Animated section header
+    animateSectionHeader(el);
+
+    // 3D flip entrance: cards fold in from above on the X axis
     const cards = el.querySelectorAll('.dsa__card');
     gsap.fromTo(cards,
-      { opacity: 0, y: 30 },
+      { opacity: 0, rotateX: 85, transformPerspective: 700, y: 40 },
       {
         opacity: 1,
+        rotateX: 0,
         y: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power3.out',
+        duration: 1,
+        stagger: 0.18,
+        ease: 'back.out(1.6)',
         scrollTrigger: {
           trigger: el,
-          start: 'top 80%',
+          start: 'top 75%',
           toggleActions: 'play none none none'
         }
       }
     );
 
-    // Number counting animation
+    // Number counting animation with glow pulse on completion
     const countElements = el.querySelectorAll('[data-target-count]');
     countElements.forEach((element) => {
       const target = parseFloat(element.getAttribute('data-target-count'));
       const obj = { val: 0 };
-      
+
       gsap.to(obj, {
         val: target,
-        duration: 1.5,
+        duration: 2,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: element,
@@ -51,6 +56,13 @@ export default function Dsa() {
           } else {
             element.textContent = obj.val.toFixed(1);
           }
+        },
+        onComplete: () => {
+          // Glow pulse when counting finishes
+          gsap.fromTo(element,
+            { textShadow: '0 0 20px rgba(255,255,255,0.8)' },
+            { textShadow: '0 0 0px rgba(255,255,255,0)', duration: 0.8, ease: 'power2.out' }
+          );
         }
       });
     });

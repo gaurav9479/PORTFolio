@@ -220,3 +220,32 @@ body::before {
   opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
+
+/* ─── GSAP Word-Split Helpers ──────────────────────────── */
+.gsap-word-outer {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: inherit;
+}
+.gsap-word-inner {
+  display: inline-block;
+}
+
+/* ─── Achievements Animated Line Track ─────────────────── */
+.achievements__line-track {
+  position: absolute;
+  left: 27px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-purple), transparent);
+  transform-origin: top center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Remove CSS ::before line since we have the animated track */
+.achievements__timeline::before {
+  display: none;
+}

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Achievements.css';
+import { animateSectionHeader } from '../utils/gsapAnimations';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,22 +37,55 @@ export default function Achievements() {
     const el = containerRef.current;
     if (!el) return;
 
-    const items = el.querySelectorAll('.achievements__item');
-    gsap.fromTo(items,
-      { opacity: 0, x: -30 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.6,
-        stagger: 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
+    animateSectionHeader(el);
+
+    // Scrub-driven line draw: the vertical timeline line draws itself as user scrolls
+    const timeline = el.querySelector('.achievements__timeline');
+    const lineTrack = el.querySelector('.achievements__line-track');
+    if (lineTrack && timeline) {
+      gsap.fromTo(lineTrack,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: 'none',
+          transformOrigin: 'top center',
+          scrollTrigger: {
+            trigger: timeline,
+            start: 'top 78%',
+            end: 'bottom 65%',
+            scrub: 1.2,
+          }
         }
+      );
+    }
+
+    // Elastic bounce entrance per item — slight CCW tilt → straight
+    const items = el.querySelectorAll('.achievements__item');
+    items.forEach((item, i) => {
+      // Icon: spin in
+      const icon = item.querySelector('.achievements__icon');
+      if (icon) {
+        gsap.fromTo(icon,
+          { scale: 0, rotation: -180, opacity: 0 },
+          {
+            scale: 1, rotation: 0, opacity: 1,
+            duration: 0.7, delay: i * 0.15 + 0.2, ease: 'back.out(2)',
+            scrollTrigger: { trigger: timeline, start: 'top 78%', toggleActions: 'play none none none' }
+          }
+        );
       }
-    );
+
+      gsap.fromTo(item,
+        { opacity: 0, x: -55, rotation: -3, transformOrigin: 'left center' },
+        {
+          opacity: 1, x: 0, rotation: 0,
+          duration: 0.85,
+          delay: i * 0.15,
+          ease: 'elastic.out(1, 0.75)',
+          scrollTrigger: { trigger: timeline, start: 'top 78%', toggleActions: 'play none none none' }
+        }
+      );
+    });
   }, []);
 
   return (
@@ -64,6 +98,9 @@ export default function Achievements() {
         </div>
 
         <div className="achievements__timeline">
+          {/* Animated vertical line that draws as you scroll */}
+          <div className="achievements__line-track" />
+
           {experience.map((item, idx) => (
             <div
               key={idx}

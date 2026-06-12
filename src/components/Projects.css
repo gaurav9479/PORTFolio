@@ -8,6 +8,8 @@
     padding: 2.5rem;
     border-left: 4px solid var(--project-accent);
     transition: all var(--transition-base);
+    transform-style: preserve-3d;
+    position: relative;
 }
 
 .projects__card-header {
@@ -86,9 +88,21 @@
     gap: 0.4rem;
 }
 
+.projects__card-wrapper {
+    position: relative;
+}
+
+.absolute-links {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 2.5rem;
+    z-index: 10;
+}
+
 .projects__links-row {
     display: flex;
     gap: 1rem;
+    transform-style: preserve-3d;
 }
 
 .projects__link {
@@ -98,11 +112,24 @@
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-secondary);
-    transition: all var(--transition-fast);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
 }
 
-.projects__link:hover {
-    color: var(--project-accent);
+.projects__card-wrapper:hover .absolute-links .projects__link {
+    border-color: var(--project-accent);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+}
+
+.projects__card-wrapper .absolute-links .projects__link:hover {
+    color: #fff !important;
+    background: var(--project-accent) !important;
+    border-color: var(--project-accent) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
 }
 
 .projects__link:hover svg {
@@ -160,5 +187,11 @@
     .projects__card-footer {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .absolute-links {
+        bottom: 1.5rem;
+        left: calc(1.5rem + 4px); /* Account for padding and 4px left border */
+        right: auto;
     }
 }

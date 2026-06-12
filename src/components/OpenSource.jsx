@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './OpenSource.css';
+import { animateSectionHeader } from '../utils/gsapAnimations';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,22 +58,30 @@ export default function OpenSource() {
     const el = containerRef.current;
     if (!el) return;
 
+    animateSectionHeader(el);
+
+    // 3D book-page fold: alternating cards fold in from left or right Y-axis
     const items = el.querySelectorAll('.opensource__card');
-    gsap.fromTo(items,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
+    items.forEach((item, i) => {
+      const fromLeft = i % 2 === 0;
+      gsap.fromTo(item,
+        {
+          opacity: 0,
+          rotateY: fromLeft ? -70 : 70,
+          transformPerspective: 900,
+          transformOrigin: fromLeft ? 'left center' : 'right center',
+          x: fromLeft ? -30 : 30,
+        },
+        {
+          opacity: 1,
+          rotateY: 0,
+          x: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: item, start: 'top 88%', toggleActions: 'play none none none' }
         }
-      }
-    );
+      );
+    });
   }, []);
 
   return (
